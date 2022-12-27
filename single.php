@@ -27,7 +27,10 @@ while (have_posts()) {
                 <span class="metabox__main">
                     Posted by <?php the_author_posts_link(); ?>
                     on <?php the_time('j F Y'); ?>
-                    in <?php the_category(', '); ?>
+                    <?php if (!has_category('uncategorized')) {
+                        echo 'in '; the_category(', ');
+                    }?>
+
                 </span>
             </p>
         </div>

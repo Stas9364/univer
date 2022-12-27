@@ -39,7 +39,9 @@ get_header();
         if ($parent_id || $isHasChild) { ?>
             <div class="page-links">
                 <h2 class="page-links__title">
-                    <a href="<?php echo get_the_permalink($parent_id) ?>"><?php echo get_the_title($parent_id); ?></a>
+                    <a href="<?php echo get_the_permalink($parent_id) ?>">
+                        <?php echo get_the_title($parent_id); ?>
+                    </a>
                 </h2>
                 <ul class="min-list">
                     <?php

@@ -22,7 +22,10 @@ get_header();
                 </h2>
                 <div class="metabox">
                     <p>Posted by <?php the_author_posts_link(); ?> on <?php the_date(); ?>
-                        in <?php the_category(', '); ?></p>
+                        <?php if (!has_category('uncategorized')) {
+                            echo 'in '; the_category(', ');
+                        }?>
+                    </p>
                 </div>
                 <div class="generic-content">
                     <?php the_excerpt(); ?>

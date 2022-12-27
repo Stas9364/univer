@@ -1,6 +1,7 @@
 <?php
 
-function univer_scripts(){
+function univer_scripts()
+{
     wp_enqueue_style('main_style', get_stylesheet_uri());
 
 //    wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css');
@@ -14,7 +15,8 @@ function univer_scripts(){
 
 add_action('wp_enqueue_scripts', 'univer_scripts');
 
-function render_title_tag() {
+function render_title_tag()
+{
     register_nav_menu('Header', 'Header_menu');
     register_nav_menu('Footer_Explore', 'Footer_Explore_menu');
     register_nav_menu('Footer_Learn', 'Footer_Learn_menu');
@@ -22,3 +24,29 @@ function render_title_tag() {
 }
 
 add_action('after_setup_theme', 'render_title_tag');
+
+function univer_adjust_queries($query)
+{
+    if (!is_admin() && $query->is_main_query() && $query->is_post_type_archive('program')) {
+        $query->set('order', 'ASC');
+        $query->set('orderby', 'title');
+        $query->set('posts_per_page', -1);
+    }
+
+    if (!is_admin() && $query->is_main_query() && $query->is_post_type_archive('event')) {
+        $today = date('Ymd');
+        $query->set('order', 'ASC');
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', 'event_date');
+        $query->set('meta_query', [
+            [
+                'key' => 'event_date',
+                'compare' => '>=',
+                'value' => $today,
+                'type' => 'string'
+            ]
+        ]);
+    }
+}
+
+add_action('pre_get_posts', 'univer_adjust_queries');

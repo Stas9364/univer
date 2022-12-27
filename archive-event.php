@@ -11,25 +11,27 @@ get_header();
             </h1>
             <div class="page-banner__intro">
                 <p>
-                   See what is going on in our world.
+                    See what is going on in our world.
                 </p>
             </div>
         </div>
     </div>
     <div class="container container--narrow page-section">
-        <?php $postEvents = new WP_Query([
-            'post_type' => 'event'
-        ]);
-        while ($postEvents->have_posts()) {
-            $postEvents->the_post(); ?>
+        <?php
+        while (have_posts()) {
+            the_post();
+            ?>
 
             <div class="event-summary">
                 <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
                         <span class="event-summary__month">
-                            <?php the_time('M'); ?>
+                            <?php
+                            $eventDate = new DateTime(CFS()->get('event_date'));
+                            echo $eventDate->format('M');
+                            ?>
                         </span>
                     <span class="event-summary__day">
-                            <?php the_time('d'); ?>
+                            <?php echo $eventDate->format('d'); ?>
                         </span>
                 </a>
                 <div class="event-summary__content">
@@ -43,10 +45,12 @@ get_header();
                 </div>
             </div>
 
-
         <?php }
+        wp_reset_postdata();
         echo paginate_links();
         ?>
+        <hr class="section-break">
+        <p>Looking for a recap of past events? <a href="<?php echo site_url('/past-events')?>">Check out our past events archive.</a></p>
     </div>
 
 <?php get_footer(); ?>
