@@ -55,22 +55,30 @@ while (have_posts()) {
         ]);
 
         if ($professors->have_posts()) {
-            ?>
+        ?>
 
-            <hr class="section-break">
-            <h2 class="headline headline--medium"><?php the_title(); ?> Professors</h2>
+    <hr class="section-break">
+        <h2 class="headline headline--medium"><?php the_title(); ?> Professors</h2>
+        <ul class="professor-cards">
 
             <?php while ($professors->have_posts()) {
                 $professors->the_post();
                 ?>
-                <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                <li class="professor-card__list-item">
+                    <a class="professor-card" href="<?php the_permalink(); ?>">
+                        <img class="professor-card__image" src="<?php the_post_thumbnail_url('professorsPortrait'); ?>"
+                             alt="<?php the_title(); ?>">
+                        <span class="professor-card__name"><?php the_title(); ?></span>
+                    </a>
+                </li>
 
             <?php }
-            wp_reset_postdata();
-        }
-        ?>
 
-        <?php
+            echo '</ul>';
+
+            wp_reset_postdata();
+            }
+
         $today = date('Ymd');
         $professors = new WP_Query([
             'post_type' => 'event',

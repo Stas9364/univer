@@ -15,15 +15,22 @@ function univer_scripts()
 
 add_action('wp_enqueue_scripts', 'univer_scripts');
 
-function render_title_tag()
+function univer_theme_features()
 {
-    register_nav_menu('Header', 'Header_menu');
-    register_nav_menu('Footer_Explore', 'Footer_Explore_menu');
-    register_nav_menu('Footer_Learn', 'Footer_Learn_menu');
-    add_theme_support('title-tag');
+    register_nav_menus([
+        'Header' => 'Header_menu',
+        'Footer_Explore' => 'Footer_Explore_menu',
+        'Footer_Learn' => 'Footer_Learn_menu'
+    ]);
+
+    add_theme_support('title-tag'); //auto added title tag in head
+    add_theme_support('post-thumbnails'); //allows to add thumbnail to custom posts
+
+    add_image_size('professorsPortrait', 480, 650, true);
+    add_image_size('pageBannerBackground', 1500, 350, true);
 }
 
-add_action('after_setup_theme', 'render_title_tag');
+add_action('after_setup_theme', 'univer_theme_features');
 
 function univer_adjust_queries($query)
 {
