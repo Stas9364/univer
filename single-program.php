@@ -1,29 +1,13 @@
 <?php
 get_header();
 
-function show_excerpt_or_content(): string
-{
-    if (has_excerpt()) {
-        return get_the_excerpt();
-    } else {
-        return wp_trim_words(get_the_content(), 14);
-    }
-}
-
 while (have_posts()) {
     the_post();
+    pageBanner([
+        'title' => get_the_title(),
+        'subtitle' => 'Learn how the school of your dreams got started.'
+    ]);
     ?>
-
-    <div class="page-banner">
-        <div class="page-banner__bg-image"
-             style="background-image: url(<?php echo get_theme_file_uri('/assets/images/ocean.jpg'); ?>)"></div>
-        <div class="page-banner__content container container--narrow">
-            <h1 class="page-banner__title"><?php the_title(); ?></h1>
-            <div class="page-banner__intro">
-                <p>Learn how the school of your dreams got started.</p>
-            </div>
-        </div>
-    </div>
 
     <div class="container container--narrow page-section">
         <div class="metabox metabox--position-up metabox--with-home-link">
@@ -57,7 +41,7 @@ while (have_posts()) {
         if ($professors->have_posts()) {
         ?>
 
-    <hr class="section-break">
+        <hr class="section-break">
         <h2 class="headline headline--medium"><?php the_title(); ?> Professors</h2>
         <ul class="professor-cards">
 
@@ -79,64 +63,41 @@ while (have_posts()) {
             wp_reset_postdata();
             }
 
-        $today = date('Ymd');
-        $professors = new WP_Query([
-            'post_type' => 'event',
-            'posts_per_page' => 2,
-            'orderby' => 'meta_value',
-            'order' => 'ASC',
-            'meta_key' => 'event_date',
-            'meta_query' => [
-                [
-                    'key' => 'event_date',
-                    'compare' => '>=',
-                    'value' => $today,
-                    'type' => 'string'
-                ],
-                [
-                    'key' => 'related_program',
-                    'compare' => 'LIKE',
-                    'value' => get_the_ID()
+            $today = date('Ymd');
+            $professors = new WP_Query([
+                'post_type' => 'event',
+                'posts_per_page' => 2,
+                'orderby' => 'meta_value',
+                'order' => 'ASC',
+                'meta_key' => 'event_date',
+                'meta_query' => [
+                    [
+                        'key' => 'event_date',
+                        'compare' => '>=',
+                        'value' => $today,
+                        'type' => 'string'
+                    ],
+                    [
+                        'key' => 'related_program',
+                        'compare' => 'LIKE',
+                        'value' => get_the_ID()
+                    ]
                 ]
-            ]
-        ]);
+            ]);
 
-        if ($professors->have_posts()) {
-            ?>
-
-            <hr class="section-break">
-            <h2 class="headline headline--medium">Upcoming <?php the_title(); ?> Events</h2>
-
-            <?php while ($professors->have_posts()) {
-                $professors->the_post();
+            if ($professors->have_posts()) {
                 ?>
 
-                <div class="event-summary">
-                    <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
-                        <span class="event-summary__month">
-                            <?php
-                            $eventDate = new DateTime(CFS()->get('event_date'));
-                            echo $eventDate->format('M');
-                            ?>
-                        </span>
-                        <span class="event-summary__day">
-                            <?php echo $eventDate->format('d'); ?>
-                        </span>
-                    </a>
-                    <div class="event-summary__content">
-                        <h5 class="event-summary__title headline headline--tiny">
-                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                        </h5>
-                        <p>
-                            <?php echo show_excerpt_or_content(); ?>
-                            <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
-                    </div>
-                </div>
+                <hr class="section-break">
+                <h2 class="headline headline--medium">Upcoming <?php the_title(); ?> Events</h2>
 
-            <?php }
-            wp_reset_postdata();
-        }
-        ?>
+                <?php while ($professors->have_posts()) {
+                    $professors->the_post();
+                    get_template_part('template-parts/content', 'events');
+                 }
+                wp_reset_postdata();
+            }
+            ?>
 
     </div>
 

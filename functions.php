@@ -1,5 +1,34 @@
 <?php
 
+function show_excerpt_or_content(): string
+{
+    if (has_excerpt()) {
+        return get_the_excerpt();
+    } else {
+        return wp_trim_words(get_the_content(), 14);
+    }
+}
+
+
+function pageBanner($args = NULL) {
+    $pageBannerIMG = CFS()->get('page_background_image');
+    $defaultBannerIMG = get_theme_file_uri('/assets/images/ocean.jpg');
+    ?>
+
+    <div class="page-banner">
+        <div class="page-banner__bg-image"
+             style="background-image: url(<?php echo $pageBannerIMG ? $pageBannerIMG : $defaultBannerIMG ?>)"></div>
+        <div class="page-banner__content container container--narrow">
+            <h1 class="page-banner__title"><?php echo $args['title'] ? $args['title'] : get_the_title(); ?></h1>
+            <div class="page-banner__intro">
+                <p><?php echo $args['subtitle'] ? $args['subtitle'] : CFS()->get('page_subtitle') ?></p>
+            </div>
+        </div>
+    </div>
+
+    <?php
+}
+
 function univer_scripts()
 {
     wp_enqueue_style('main_style', get_stylesheet_uri());

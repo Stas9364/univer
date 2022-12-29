@@ -1,23 +1,13 @@
 <?php
 get_header();
 
-$pageBannerIMG = CFS()->get('page_background_image');
-$defaultBannerIMG = get_theme_file_uri('/assets/images/ocean.jpg');
-
 while (have_posts()) {
     the_post();
+    pageBanner([
+        'title' => '',
+        'subtitle' => ''
+    ]);
     ?>
-
-    <div class="page-banner">
-        <div class="page-banner__bg-image"
-             style="background-image: url(<?php echo $pageBannerIMG ? $pageBannerIMG : $defaultBannerIMG ?>)"></div>
-        <div class="page-banner__content container container--narrow">
-            <h1 class="page-banner__title"><?php the_title(); ?></h1>
-            <div class="page-banner__intro">
-                <p><?php echo CFS()->get('page_subtitle') ?></p>
-            </div>
-        </div>
-    </div>
 
     <div class="container container--narrow page-section">
         <div class="generic-content">
