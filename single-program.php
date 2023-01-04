@@ -42,7 +42,9 @@ while (have_posts()) {
         ?>
 
         <hr class="section-break">
-        <h2 class="headline headline--medium"><?php the_title(); ?> Professors</h2>
+        <h2 class="headline headline--medium">
+            <?php the_title(); ?> Professors
+        </h2>
         <ul class="professor-cards">
 
             <?php while ($professors->have_posts()) {
@@ -52,7 +54,9 @@ while (have_posts()) {
                     <a class="professor-card" href="<?php the_permalink(); ?>">
                         <img class="professor-card__image" src="<?php the_post_thumbnail_url('professorsPortrait'); ?>"
                              alt="<?php the_title(); ?>">
-                        <span class="professor-card__name"><?php the_title(); ?></span>
+                        <span class="professor-card__name">
+                            <?php the_title(); ?>
+                        </span>
                     </a>
                 </li>
 
@@ -75,7 +79,7 @@ while (have_posts()) {
                         'key' => 'event_date',
                         'compare' => '>=',
                         'value' => $today,
-                        'type' => 'string'
+                        'type' => 'DATE'
                     ],
                     [
                         'key' => 'related_program',
@@ -84,21 +88,22 @@ while (have_posts()) {
                     ]
                 ]
             ]);
-
             if ($professors->have_posts()) {
+
                 ?>
 
                 <hr class="section-break">
-                <h2 class="headline headline--medium">Upcoming <?php the_title(); ?> Events</h2>
+                <h2 class="headline headline--medium">
+                    Upcoming <?php the_title(); ?> Events
+                </h2>
 
                 <?php while ($professors->have_posts()) {
                     $professors->the_post();
                     get_template_part('template-parts/content', 'events');
-                 }
+                }
                 wp_reset_postdata();
             }
             ?>
-
     </div>
 
 <?php }

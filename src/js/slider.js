@@ -42,7 +42,7 @@ if (slider) {
         if (this.currentElement < 0) this.currentElement = this.elemCount - 1;
 
         if (!this.options.loop) {
-            if (this.currentElement == 0) {
+            if (this.currentElement === 0) {
                 this.leftArrow.style.display = 'none'
             }
             ;
@@ -67,13 +67,12 @@ if (slider) {
         if (this.currentElement >= this.elemCount) this.currentElement = 0;
 
         if (!this.options.loop) {
-            if (this.currentElement == this.elemCount - 1) {
+            if (this.currentElement === this.elemCount - 1) {
                 this.rightArrow.style.display = 'none'
             }
             ;
             this.leftArrow.style.display = 'block'
         }
-        ;
 
         this.sldrElements[this.currentElement].style.opacity = '1';
         this.sldrElements[prevElement].style.opacity = '0';
@@ -116,7 +115,7 @@ if (slider) {
                     that.elemNext()
                 }
             }, that.options.interval)
-        };
+        }
 
         // Start initialization
         if (that.elemCount <= 1) {   // Отключить навигацию
@@ -126,7 +125,7 @@ if (slider) {
             that.leftArrow.style.display = 'none';
             that.rightArrow.style.display = 'none'
         }
-        ;
+
         if (that.elemCount >= 1) {   // показать первый элемент
             that.sldrElemFirst.style.opacity = '1';
         }
@@ -143,7 +142,6 @@ if (slider) {
             }, false);
             that.sldrList.addEventListener('mouseleave', setAutoScroll, false)
         }
-        ;
 
         if (that.options.arrows) {  // инициализация стрелок
             that.leftArrow.addEventListener('click', function () {
@@ -164,7 +162,6 @@ if (slider) {
             that.leftArrow.style.display = 'none';
             that.rightArrow.style.display = 'none'
         }
-        ;
 
         if (that.options.dots) {  // инициализация индикаторных точек
             let sum = '', diffNum;
@@ -189,7 +186,7 @@ if (slider) {
                     // Если n == that.currentElement ничего не делаем
                 }, false)
             }
-            ;
+
             that.dotOff(0);  // точка[0] выключена, остальные включены
             for (let i = 1; i < that.elemCount; i++) {
                 that.dotOn(i)
@@ -199,4 +196,3 @@ if (slider) {
 
     new Sim();
 }
-

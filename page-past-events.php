@@ -9,7 +9,7 @@ pageBanner([
     <div class="container container--narrow page-section">
         <?php
         $today = date('Ymd');
-        $homepageEvents = new WP_Query([
+        $pastEvents = new WP_Query([
             'post_type' => 'event',
             'orderby' => 'meta_value',
             'order' => 'ASC',
@@ -20,17 +20,17 @@ pageBanner([
                     'key' => 'event_date',
                     'compare' => '<',
                     'value' => $today,
-                    'type' => 'string'
+                    'type' => 'DATE'
                 ]
             ]
         ]);
-        while ($homepageEvents->have_posts()) {
-            $homepageEvents->the_post();
+        while ($pastEvents->have_posts()) {
+	        $pastEvents->the_post();
             get_template_part('template-parts/content-events');
              }
         wp_reset_postdata();
         echo paginate_links([
-            'total' => $homepageEvents->max_num_pages
+            'total' => $pastEvents->max_num_pages
         ]);
         ?>
     </div>

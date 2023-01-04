@@ -19,14 +19,14 @@
                 <div class="site-footer__col-two">
                     <h3 class="headline headline--small">Explore</h3>
                     <nav class="nav-list">
-                        <?php wp_nav_menu(['theme_location' => 'Footer_Explore']); ?>
+						<?php wp_nav_menu( [ 'theme_location' => 'Footer_Explore' ] ); ?>
                     </nav>
                 </div>
 
                 <div class="site-footer__col-three">
                     <h3 class="headline headline--small">Learn</h3>
                     <nav class="nav-list">
-                        <?php wp_nav_menu(['theme_location' => 'Footer_Learn']); ?>
+						<?php wp_nav_menu( [ 'theme_location' => 'Footer_Learn' ] ); ?>
                     </nav>
                 </div>
             </div>
@@ -59,6 +59,19 @@
         </div>
     </div>
 </footer>
+
+<div class="search-overlay">
+    <div class="search-overlay__top">
+        <div class="container">
+            <i class="fa fa-search fa-2x search-overlay__icon" aria-hidden="true"></i>
+            <input id="search-term" type="text" class="search-term" placeholder="What are you looking for?">
+            <i class="fa fa-window-close fa-2x search-overlay__close" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="container">
+        <div id="search-overlay__results"></div>
+    </div>
+</div>
 
 <?php wp_footer(); ?>
 </body>
