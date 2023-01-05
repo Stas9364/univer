@@ -39,37 +39,37 @@
 }
 
 /* Navigation item styles */
-div.sim-slider-arrow-left,
-div.sim-slider-arrow-right {
-    width: 22px;
-    height: 40px;
-    position: absolute;
-    cursor: pointer;
-    opacity: 0.8;
-    z-index: 4;
-}
+/*div.sim-slider-arrow-left,*/
+/*div.sim-slider-arrow-right {*/
+/*    width: 22px;*/
+/*    height: 40px;*/
+/*    position: absolute;*/
+/*    cursor: pointer;*/
+/*    opacity: 0.8;*/
+/*    z-index: 4;*/
+/*}*/
 
-div.sim-slider-arrow-left {
-    left: 10px;
-    top: 40%;
-    display: block;
-    background: url("http://pvbk.spb.ru/inc/slider/sim-files/sim-arrow-left.png") no-repeat;
-}
+/*div.sim-slider-arrow-left {*/
+/*    left: 10px;*/
+/*    top: 40%;*/
+/*    display: block;*/
+/*    background: url("http://pvbk.spb.ru/inc/slider/sim-files/sim-arrow-left.png") no-repeat;*/
+/*}*/
 
-div.sim-slider-arrow-right {
-    right: 10px;
-    top: 40%;
-    display: block;
-    background: url("http://pvbk.spb.ru/inc/slider/sim-files/sim-arrow-right.png") no-repeat;
-}
+/*div.sim-slider-arrow-right {*/
+/*    right: 10px;*/
+/*    top: 40%;*/
+/*    display: block;*/
+/*    background: url("http://pvbk.spb.ru/inc/slider/sim-files/sim-arrow-right.png") no-repeat;*/
+/*}*/
 
-div.sim-slider-arrow-left:hover {
-    opacity: 1.0;
-}
+/*div.sim-slider-arrow-left:hover {*/
+/*    opacity: 1.0;*/
+/*}*/
 
-div.sim-slider-arrow-right:hover {
-    opacity: 1.0;
-}
+/*div.sim-slider-arrow-right:hover {*/
+/*    opacity: 1.0;*/
+/*}*/
 
 div.sim-slider-dots {
     width: 100%;
