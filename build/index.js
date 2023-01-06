@@ -96,8 +96,7 @@ class Search {
     }
   };
   getResults = () => {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().when(jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${univerData.root_url}/wp-json/wp/v2/posts?search=${this.searchField.val()}`), jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${univerData.root_url}/wp-json/wp/v2/pages?search=${this.searchField.val()}`), jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${univerData.root_url}/wp-json/wp/v2/event?search=${this.searchField.val()}`)).then((posts, pages, events) => {
-      const results = [...posts[0], ...pages[0], ...events[0]];
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${univerData.root_url}/wp-json/univer/v1/search?keyword=${this.searchField.val()}`).then(posts => {
       const out = results.map(el => `
                 <li>
                     <a href="${el.link}">${el.title.rendered}</a>
@@ -110,7 +109,9 @@ class Search {
                     ${out || '<p>No general information matches that search.</p>'}
                 </ul>
             `);
-    }, () => this.resultDiv.html('<p>Unexpected error. Please try again.</p>'));
+    }).fail(() => {
+      this.resultDiv.html('<p>Unexpected error. Please try again.</p>');
+    });
     this.isSpinnerVisible = false;
   };
   openOverlay = () => {

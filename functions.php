@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/inc/search-custom-route.php';
 
 function show_excerpt_or_content(): string {
 	if ( has_excerpt() ) {
@@ -98,4 +99,4 @@ function univer_custom_rest() {
 	] );
 }
 
-add_action( 'rest_api_init', 'univer_custom_rest' );
+add_action( 'rest_api_init', 'univer_custom_rest' ); //set custom fields in wp_rest_api
