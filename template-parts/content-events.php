@@ -16,6 +16,7 @@
         </h5>
         <p>
             <?php echo show_excerpt_or_content(); ?>
-            <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
+            <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
+        </p>
     </div>
 </div>

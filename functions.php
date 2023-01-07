@@ -1,11 +1,11 @@
 <?php
 require_once __DIR__ . '/inc/search-custom-route.php';
 
-function show_excerpt_or_content(): string {
+function show_excerpt_or_content($num_words = 14): string {
 	if ( has_excerpt() ) {
 		return get_the_excerpt();
 	} else {
-		return wp_trim_words( get_the_content(), 14 );
+		return wp_trim_words( get_the_content(), $num_words );
 	}
 }
 
