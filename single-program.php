@@ -20,7 +20,7 @@ while (have_posts()) {
             </p>
         </div>
         <div class="generic-content">
-            <?php the_content(); ?>
+            <?php echo CFS()->get('main_content'); ?>
         </div>
 
         <?php
