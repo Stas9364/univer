@@ -138,7 +138,6 @@ class Search {
         document.body.classList.add('body-no-scroll');
         setTimeout(() => this.searchField.focus(), 301);
         this.isOverlayOpen = true;
-        return false;
     }
 
     closeOverlay = () => {
@@ -149,7 +148,10 @@ class Search {
     }
 
     keyPressDispatcher = (event) => {
-        if (event.keyCode === 83 && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+        if (event.keyCode === 83 &&
+            document.activeElement.tagName !== "INPUT" &&
+            document.activeElement.tagName !== "TEXTAREA"
+        ) {
             this.openOverlay();
         }
 
