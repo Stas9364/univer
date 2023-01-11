@@ -7,11 +7,11 @@
 <!doctype html>
 <html lang=<?php language_attributes(); ?>>
 <head>
-    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <?php wp_head(); ?>
+	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 <header class="site-header">
@@ -21,22 +21,40 @@
                 <strong>Fictional</strong> University
             </a>
         </h1>
-        <a href="<?php echo site_url('/search'); ?>" class="js-search-trigger site-header__search-trigger">
+        <a href="<?php echo site_url( '/search' ); ?>" class="js-search-trigger site-header__search-trigger">
             <i class="fa fa-search" aria-hidden="true"></i>
         </a>
         <i class="site-header__menu-trigger fa fa-bars" aria-hidden="true"></i>
         <div class="site-header__menu group">
             <nav class="main-navigation">
-                <?php
-                wp_nav_menu([
-                    'theme_location' => 'Header'
-                ]);
-                ?>
+				<?php
+				wp_nav_menu( [
+					'theme_location' => 'Header'
+				] );
+				?>
             </nav>
             <div class="site-header__util">
-                <a href="#" class="btn btn--small btn--orange float-left push-right">Login</a>
-                <a href="#" class="btn btn--small btn--dark-orange float-left">Sign Up</a>
-                <a href="<?php echo site_url('/search'); ?>" class="search-trigger js-search-trigger">
+
+				<?php if ( is_user_logged_in() ) { ?>
+
+                    <a href="<?php echo esc_url(site_url('/my-notes')); ?>"
+                       class="btn btn--small btn--orange float-left push-right">My notes</a>
+
+                    <a href="<?php echo wp_logout_url( home_url() ); ?>"
+                       class="btn btn--small btn--dark-orange float-left btn--with-photo">
+                        <span class="site-header__avatar"><?php echo get_avatar(get_current_user_id(), 60)?></span>
+                        <span class="btn__text"> Log Out</span>
+                    </a>
+
+				<?php } else { ?>
+
+                    <a href="<?php echo wp_login_url(); ?>"
+                       class="btn btn--small btn--orange float-left push-right">Login</a>
+                    <a href="<?php echo wp_registration_url(); ?>"
+                       class="btn btn--small btn--dark-orange float-left">Sign Up</a>
+				<?php } ?>
+
+                <a href="<?php echo esc_url(site_url( '/search' )); ?>" class="search-trigger js-search-trigger">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </a>
             </div>

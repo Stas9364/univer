@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/inc/search-custom-route.php';
 
-function show_excerpt_or_content($num_words = 14): string {
+function show_excerpt_or_content( $num_words = 14 ): string {
 	if ( has_excerpt() ) {
 		return get_the_excerpt();
 	} else {
@@ -10,7 +10,7 @@ function show_excerpt_or_content($num_words = 14): string {
 }
 
 
-function pageBanner( $args = null ) {
+function pageBanner( $args = null ) { //util function,  can call anywhere, reduce template code
 	$pageBannerIMG    = CFS()->get( 'page_background_image' );
 	$defaultBannerIMG = get_theme_file_uri( '/images/ocean.jpg' );
 	?>
@@ -45,7 +45,10 @@ function univer_scripts() {
 	wp_enqueue_script( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js' );
 	wp_enqueue_script( 'js-script', get_template_directory_uri() . '/build/index.js', array( 'jquery' ), '', true );
 
-	wp_localize_script( 'js-script', 'univerData', [ 'root_url' => get_site_url() ] );
+	wp_localize_script( 'js-script', 'univerData', [
+		'root_url' => get_site_url(),
+		'nonce'    => wp_create_nonce( 'wp_rest' ) //create secret key
+	] ); //allow get object_name in each file
 }
 
 add_action( 'wp_enqueue_scripts', 'univer_scripts' );
@@ -89,7 +92,7 @@ function univer_adjust_queries( $query ) {
 	}
 }
 
-add_action( 'pre_get_posts', 'univer_adjust_queries' );
+add_action( 'pre_get_posts', 'univer_adjust_queries' ); //set the settings for the specified post_type
 
 function univer_custom_rest() {
 	register_rest_field( 'post', 'authorName', [
@@ -100,3 +103,44 @@ function univer_custom_rest() {
 }
 
 add_action( 'rest_api_init', 'univer_custom_rest' ); //set custom fields in wp_rest_api
+
+
+//Redirect subscribers accounts to home page
+function redirectSubsToFrontPage() {
+	if ( count( wp_get_current_user()->roles ) === 1 && wp_get_current_user()->roles[0] === 'subscriber' ) {
+		wp_redirect( home_url() );
+		exit;
+	}
+}
+
+add_action( 'admin_init', 'redirectSubsToFrontPage' ); //redirecting after logging in to specified url
+
+function noSubsAdminBar() {
+	if ( count( wp_get_current_user()->roles ) === 1 && wp_get_current_user()->roles[0] == 'subscriber' ) {
+		show_admin_bar( false );
+	}
+}
+
+add_action( 'wp_loaded', 'noSubsAdminBar' ); //disable admin bar by condition
+
+function siteLogoURL() {
+	return home_url();
+}
+
+add_filter( 'login_headerurl', 'siteLogoURL' ); //allow change logo url at login and registration pages
+
+function loginPageStyles() {
+	wp_enqueue_style( 'main_style', get_theme_file_uri( '/build/index.css' ) );
+	wp_enqueue_style( 'main_style-index', get_theme_file_uri( '/build/style-index.css' ) );
+	wp_enqueue_style( 'bootstrap-fa', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
+	wp_enqueue_style( 'google-fonts', 'https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i' );
+
+}
+
+add_action( 'login_enqueue_scripts', 'loginPageStyles' ); //allow change styles at login and registration pages
+
+function logoText() {
+	return get_bloginfo( 'name' );
+}
+
+add_filter( 'login_headertext', 'logoText' ); //allow change title at login page

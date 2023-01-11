@@ -13,7 +13,7 @@ add_action( 'rest_api_init', 'univerRegisterSearch' );
 function univerSearchResults( $data ) {
 	$mainQuery = new WP_Query( [
 		'post_type' => [ 'post', 'page', 'professor', 'program', 'event' ],
-		's'         => sanitize_text_field( $data['keyword'] ) //protecting function
+		's'         => sanitize_text_field( $data['keyword'] ) //protecting function sanitize_
 	] );
 
 	$results = [
