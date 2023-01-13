@@ -62,22 +62,18 @@ __webpack_require__.r(__webpack_exports__);
 
 class MyNotes {
   constructor() {
-    this.editButton = document.querySelectorAll('.edit-note');
-    this.deleteButton = document.querySelectorAll('.delete-note');
-    this.updateButton = document.querySelectorAll('.update-note');
+    this.myNotes = document.querySelector('#my-notes');
     this.events();
   }
   events = () => {
-    this.editButton.forEach(btn => btn.addEventListener('click', e => {
-      this.editNote(e);
-    }));
-    this.deleteButton.forEach(btn => btn.addEventListener('click', e => {
-      this.deleteNote(e);
-    }));
-    this.updateButton.forEach(btn => btn.addEventListener('click', e => {
-      this.updateNote(e);
-    }));
+    this.myNotes.addEventListener("click", e => this.clickHandler(e));
+    document.querySelector('.submit-note').addEventListener('click', e => this.createNote(e));
   };
+  clickHandler(e) {
+    if (e.target.classList.contains("delete-note") || e.target.classList.contains("fa-trash-o")) this.deleteNote(e);
+    if (e.target.classList.contains("edit-note") || e.target.classList.contains("fa-pencil") || e.target.classList.contains("fa-times")) this.editNote(e);
+    if (e.target.classList.contains("update-note") || e.target.classList.contains("fa-arrow-right")) this.updateNote(e);
+  }
   findNearestParentLi(el) {
     let thisNote = el;
     while (thisNote.tagName !== "LI") {
@@ -113,7 +109,7 @@ class MyNotes {
   };
   deleteNote = async e => {
     const thisNote = this.findNearestParentLi(e.target);
-    const result = await request('DELETE', null, thisNote);
+    const result = await requestToDB('DELETE', null, thisNote);
     console.log(result);
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(thisNote).slideUp();
   };
@@ -123,14 +119,44 @@ class MyNotes {
       title: thisNote.querySelector('.note-title-field').value,
       content: thisNote.querySelector('.note-body-field').value
     };
-    const result = await request('PUT', content, thisNote);
+    const result = await requestToDB('PUT', content, thisNote);
     console.log(result);
     this.saveMode(thisNote);
   };
+  createNote = async e => {
+    const content = {
+      title: document.querySelector('.new-note-title').value,
+      content: document.querySelector('.new-note-body').value,
+      status: 'private'
+    };
+    if (content.title && content.content) {
+      const result = await requestToDB('POST', content, null);
+      console.log(result);
+      document.querySelector('.new-note-title').value = '';
+      document.querySelector('.new-note-body').value = '';
+      document.querySelector('#my-notes').insertAdjacentHTML('afterBegin', `
+                <li data-note-id="${result.id}">
+                    <input class="note-title-field" value="${result.title.raw}" readonly>
+                    <span class="edit-note">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>Edit
+                    </span>
+                    <span class="delete-note">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>Delete
+                    </span>
+                    <textarea class="note-body-field" readonly>
+                        ${result.content.raw}
+                    </textarea>
+                    <span class="update-note btn btn--blue btn--small">
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>Save
+                    </span>
+                </li>
+            `);
+    }
+  };
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyNotes);
-async function request(method, content, thisNote) {
-  const resp = await fetch(`${univerData.root_url}/wp-json/wp/v2/note/${thisNote.getAttribute('data-note-id')}`, {
+async function requestToDB(method, content, thisNote) {
+  const resp = await fetch(`${univerData.root_url}/wp-json/wp/v2/note/${thisNote ? thisNote.getAttribute('data-note-id') : ''}`, {
     method,
     headers: {
       'X-WP-Nonce': univerData.nonce,
