@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/inc/search-custom-route.php';
+require_once __DIR__ . './inc/like-custom-route.php';
 
 function show_excerpt_or_content( $num_words = 14 ): string {
 	if ( has_excerpt() ) {
@@ -10,7 +11,7 @@ function show_excerpt_or_content( $num_words = 14 ): string {
 }
 
 
-function pageBanner( $args = null ) { //util function,  can call anywhere, reduce template code
+function pageBanner( $args = null ): void { //util function,  can call anywhere, reduce template code
 	$pageBannerIMG    = CFS()->get( 'page_background_image' );
 	$defaultBannerIMG = get_theme_file_uri( '/images/ocean.jpg' );
 	?>
@@ -100,6 +101,25 @@ function univer_custom_rest() {
 			return get_the_author();
 		}
 	] );
+
+	register_rest_field( 'note', 'userNoteCount', [
+		'get_callback' => function () {
+			return count_user_posts( get_current_user_id(), 'note' );
+		}
+	] );
+
+//	register_rest_field( 'professor', 'isLiked', [
+//		'get_callback' => function () {
+//			$user  = get_current_user();
+//            if ($user['isLiked']) {
+//                $value = false;
+//            }else {
+//                $value = true;
+//            }
+//
+//			return $value;
+//		}
+//	] );
 }
 
 add_action( 'rest_api_init', 'univer_custom_rest' ); //set custom fields in wp_rest_api
@@ -147,16 +167,21 @@ add_filter( 'login_headertext', 'logoText' ); //allow change title at login page
 
 
 //Force note posts to be private
-function makeNotePrivate($data) {
-    if($data['post_type'] === 'note') {
-	    $data['post_title'] = sanitize_text_field($data['post_title']); //send data to db without HTML tags
-	    $data['post_content'] = sanitize_textarea_field($data['post_content']);
-    }
+function makeNotePrivate( $data, $postarr ) {
+	if ( $data['post_type'] === 'note' ) {
+		if ( count_user_posts( get_current_user_id(), 'note' ) > 4 && ! $postarr['ID'] ) {
+			die();
+		}
 
-    if($data['post_type'] === 'note' && $data['post_status'] !== 'trash') {
-        $data['post_status'] = 'private';
-    }
-    return $data;
+		$data['post_title']   = sanitize_text_field( $data['post_title'] ); //send data to db without HTML tags
+		$data['post_content'] = sanitize_textarea_field( $data['post_content'] );
+	}
+
+	if ( $data['post_type'] === 'note' && $data['post_status'] !== 'trash' ) {
+		$data['post_status'] = 'private';
+	}
+
+	return $data;
 }
 
-add_filter('wp_insert_post_data', 'makeNotePrivate');
+add_filter( 'wp_insert_post_data', 'makeNotePrivate', 10, 2 );

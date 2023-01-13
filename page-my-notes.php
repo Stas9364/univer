@@ -20,6 +20,9 @@ while ( have_posts() ) {
             <input class="new-note-title" type="text" placeholder="Title">
             <textarea class="new-note-body" placeholder="Your note here..."></textarea>
             <span class="submit-note">Create Note</span>
+            <span class="note-limit-message">
+                Note limit reached: delete an existing note to make room for a new one.
+            </span>
         </div>
         <ul class="min-list link-list" id="my-notes">
 			<?php
@@ -34,7 +37,7 @@ while ( have_posts() ) {
 
                 <li data-note-id="<?php the_ID(); ?>">
                     <input class="note-title-field"
-                           value="<?php echo str_replace('Private: ', '',esc_attr( get_the_title() )); ?>"
+                           value="<?php echo str_replace('Private: ', '', esc_attr( get_the_title() )); ?>"
                            readonly
                     >
                     <span class="edit-note">
