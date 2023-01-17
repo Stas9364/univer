@@ -48,7 +48,7 @@ function univer_scripts() {
 
 	wp_localize_script( 'js-script', 'univerData', [
 		'root_url' => get_site_url(),
-		'nonce'    => wp_create_nonce( 'wp_rest' ) //create secret key
+		'nonce'    => wp_create_nonce( 'wp_rest' ) //create secret key for CRUD
 	] ); //allow get object_name in each file
 }
 

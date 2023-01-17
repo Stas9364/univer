@@ -46,9 +46,10 @@ while ( have_posts() ) {
 						if ( $existQuery->found_posts ) {
 							$isLiked = 'yes';
 						}
-					}
-					?>
-                    <span class="like-box" data-exists="<?php echo $isLiked; ?>" data-id="<?php the_ID(); ?>">
+					} ?>
+
+                    <span class="like-box" data-like="<?php echo $existQuery->posts[0]->ID ?? '' ?>"
+                          data-exists="<?php echo $isLiked; ?>" data-id="<?php the_ID(); ?>">
                         <i class="fa fa-heart-o" aria-hidden="true"></i>
                         <i class="fa fa-heart" aria-hidden="true"></i>
                         <span class="like-count">

@@ -16,7 +16,7 @@ function univerRegisterLike() {
 
 function createLikeRoute( $data ) {
 	if ( is_user_logged_in() ) {
-		$professor = sanitize_text_field( $data['professorId']);
+		$professor = sanitize_text_field( $data['professorId'] );
 
 		$existQuery = new WP_Query( [
 			'author'     => get_current_user_id(),
@@ -30,8 +30,8 @@ function createLikeRoute( $data ) {
 			]
 		] );
 
-		if ($existQuery->found_posts === 0 && get_post_type($professor) === 'professor') {
-			return wp_insert_post( [
+		if ( $existQuery->found_posts === 0 && get_post_type( $professor ) === 'professor' ) {
+			return wp_insert_post( [ //return like_post_id
 				'post_type'   => 'like',
 				'post_title'  => 'Like',
 				'post_status' => 'publish',
@@ -49,6 +49,11 @@ function createLikeRoute( $data ) {
 }
 
 function deleteLikeRoute( $data ) {
-//	return wp_delete_post( $data['professorId'] );
+	$likeID = sanitize_text_field( $data['likeId'] );
+	if ( get_current_user_id() == get_post_field( 'post_author', $likeID ) ) {
+		return wp_delete_post( $likeID );
+	} else {
+		die( "You don't have permission to delete that" );
+	}
 }
 
